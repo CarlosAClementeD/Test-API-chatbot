@@ -47,7 +47,7 @@ class PreguntasController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  string  $pregunta_user
+     * @param  string  $texto
      * @return \Illuminate\Http\Response
      */
 
@@ -64,17 +64,23 @@ class PreguntasController extends Controller
         return $jaccardArray;
     }
     
-     public function show($texto)
-     {
+     public function show($texto){
          $preguntas = Preguntas::pluck('pregunta')->toArray();
-         //dd($preguntas);
          $jaccardArray = $this->jaccardSimilarity($preguntas, $texto);
-         //dd($jaccardArray);
-         $maxIndex = array_search(max($jaccardArray), $jaccardArray);
-        //dd($maxIndex);
-        $respuesta = Preguntas::where('pregunta', $preguntas[$maxIndex])->value('respuesta');
-        return response()->json(['respuesta' => $respuesta]);
-         
+         $coincidencia = max($jaccardArray);
+         $maxIndex = array_search($coincidencia, $jaccardArray);
+        if($coincidencia < 40){
+            return response()->json([
+                'respuesta' => 'No encontre respuesta a tu pregunta , intenta reformulando tu pregunta',
+                'coincidencia' => $coincidencia
+            ]);
+        }else{
+            $respuesta = Preguntas::where('pregunta', $preguntas[$maxIndex])->value('respuesta');
+            return response()->json([
+                'respuesta' => $respuesta,
+                'coincidencia' => $coincidencia
+        ]);
+        }
 
      }
 

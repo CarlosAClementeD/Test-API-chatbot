@@ -18,5 +18,5 @@ use App\Http\Controllers\PreguntasController;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
 Route::resource('preguntas', PreguntasController::class);
-Route::get('/preguntas/buscar/{busqueda}', [PreguntaController::class, 'search']);

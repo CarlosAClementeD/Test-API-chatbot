@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Preguntas;
+use App\Models\PreguntaSimilar;
+use Illuminate\Support\Facades\DB;
 
 class PreguntasController extends Controller
 {
@@ -50,6 +52,26 @@ class PreguntasController extends Controller
      * @param  string  $texto
      * @return \Illuminate\Http\Response
      */
+    public function LimpiarTexto($texto) {
+        // Eliminar caracteres especiales
+        $texto = preg_replace('/[^a-zA-Z0-9 ]/', '', $texto);
+      
+        // Reemplazar vocales con acento
+        $buscar = array('á', 'é', 'í', 'ó', 'ú', 'Á', 'É', 'Í', 'Ó', 'Ú');
+        $reemplazar = array('a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U');
+        $texto = str_replace($buscar, $reemplazar, $texto);
+      
+        return strtolower($texto);
+    }
+
+    public function LimpiarArreglo($arreglo) {
+        $arregloProcesado = array();
+        foreach ($arreglo as $texto) {
+          $textoProcesado = $this->LimpiarTexto($texto);
+          array_push($arregloProcesado, $textoProcesado);
+        }
+        return $arregloProcesado;
+    }
 
     public function jaccardSimilarity($arr1, $str2) {
         $arr2 = explode(' ', $str2);
@@ -66,20 +88,37 @@ class PreguntasController extends Controller
     
      public function show($texto){
          $preguntas = Preguntas::pluck('pregunta')->toArray();
-         $jaccardArray = $this->jaccardSimilarity($preguntas, $texto);
+         $jaccardArray = $this->jaccardSimilarity($this->LimpiarArreglo($preguntas), $this->LimpiarTexto($texto));
          $coincidencia = max($jaccardArray);
          $maxIndex = array_search($coincidencia, $jaccardArray);
         if($coincidencia < 40){
-            return response()->json([
-                'respuesta' => 'No encontre respuesta a tu pregunta , intenta reformulando tu pregunta',
-                'coincidencia' => $coincidencia
-            ]);
+            $preguntasSimilares = PreguntaSimilar::pluck('pregunta')->toArray();
+            $jaccardArraySim = $this->jaccardSimilarity($this->LimpiarArreglo($preguntasSimilares), $this->LimpiarTexto($texto));
+            $coincidenciaSim = max($jaccardArraySim);
+            $maxIndexSim = array_search($coincidenciaSim, $jaccardArraySim);
+            $respuestaSim = DB::table('preguntas')
+                ->join('preguntas_similares','preguntas.id', '=', 'preguntas_similares.id_preguntas')
+                ->select('respuesta')
+                ->where('preguntas_similares.pregunta', '=', $preguntasSimilares[$maxIndexSim])
+                ->get();
+                if($coincidenciaSim >40){
+                    return response()->json([
+                        'respuesta' => $respuestaSim[0]->respuesta,
+                        'coincidencia' => $coincidenciaSim
+                    ]);
+                }else{
+                    return response()->json([
+                        'respuesta' => 'No encontré información acerca de tu pregunta, intenta hacer otra pregunta o cambia la redacción de tu pregunta anterior.',
+                        'coincidencia' => $coincidenciaSim
+                    ]);
+                }
+           
         }else{
             $respuesta = Preguntas::where('pregunta', $preguntas[$maxIndex])->value('respuesta');
             return response()->json([
                 'respuesta' => $respuesta,
                 'coincidencia' => $coincidencia
-        ]);
+            ]);
         }
 
      }

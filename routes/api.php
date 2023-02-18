@@ -20,3 +20,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::resource('preguntas', PreguntasController::class);
+Route::post('enviar-correo', [PreguntasController::class, 'enviarCorreo']);

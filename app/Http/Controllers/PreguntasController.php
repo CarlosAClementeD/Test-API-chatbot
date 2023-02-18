@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Preguntas;
 use App\Models\PreguntaSimilar;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\EnviarCorreo;
 
 class PreguntasController extends Controller
 {
@@ -122,6 +124,26 @@ class PreguntasController extends Controller
         }
 
      }
+
+    
+     
+     
+     public function enviarCorreo(Request $request){
+         $nombre = $request->input('nombre');
+         $correo = $request->input('correo');
+         $mensaje = $request->input('mensaje');
+     
+         $datos = array(
+             'nombre' => $nombre,
+             'correo' => $correo,
+             'mensaje' => $mensaje
+         );
+     
+         Mail::to('web@uaem.mx')->send(new EnviarCorreo($datos));
+     
+         return response()->json(['message' => '¡Correo enviado exitosamente!'], 200);
+     }
+     
 
     /**
      * Show the form for editing the specified resource.

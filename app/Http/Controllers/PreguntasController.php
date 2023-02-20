@@ -90,12 +90,12 @@ class PreguntasController extends Controller
     
      public function show($texto){
          $preguntas = Preguntas::pluck('pregunta')->toArray();
-         $jaccardArray = $this->jaccardSimilarity($this->LimpiarArreglo($preguntas), $this->LimpiarTexto($texto));
+         $jaccardArray = $this->jaccardSimilarity($this->LimpiarArreglo($preguntas),$texto);
          $coincidencia = max($jaccardArray);
          $maxIndex = array_search($coincidencia, $jaccardArray);
         if($coincidencia < 40){
             $preguntasSimilares = PreguntaSimilar::pluck('pregunta')->toArray();
-            $jaccardArraySim = $this->jaccardSimilarity($this->LimpiarArreglo($preguntasSimilares), $this->LimpiarTexto($texto));
+            $jaccardArraySim = $this->jaccardSimilarity($this->LimpiarArreglo($preguntasSimilares),$texto);
             $coincidenciaSim = max($jaccardArraySim);
             $maxIndexSim = array_search($coincidenciaSim, $jaccardArraySim);
             $respuestaSim = DB::table('preguntas')

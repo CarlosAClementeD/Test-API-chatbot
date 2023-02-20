@@ -5,12 +5,9 @@
     </head>
     <body>
         <h1>Consulta desde Chatbot</h1>
-        <p>Hola {{ $datos['nombre'] }},</p>
-        <p>Gracias por ponerte en contacto con nosotros. Hemos recibido tu mensaje:</p>
+        <p><b>Nombre del solicitante: </b> {{ $datos['nombre'] }},</p>
+        <p><b>Mensaje del solicitante: </b></p>
         <p>{{ $datos['mensaje'] }}</p>
-        <p>Te responderemos lo antes posible. a tu correo {{ $datos['correo'] }}</p>
-        <p>Saludos cordiales,</p>
-        <p></p>
-        <p>El equipo servicios escolares</p>
+        <p><b>Correo de contacto del solicitante: </b>{{ $datos['correo'] }}</p>
     </body>
 </html>

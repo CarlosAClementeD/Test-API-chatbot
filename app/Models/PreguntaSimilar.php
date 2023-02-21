@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Preguntas;
+use App\Models\Pregunta;
 
 class PreguntaSimilar extends Model
 {
@@ -14,7 +14,7 @@ class PreguntaSimilar extends Model
     protected $fillable = ['pregunta','id_preguntas'];
 
     public function pregunta() {
-        return $this->hasOne( Preguntas::class, 'id','id_preguntas');
+        return $this->hasOne( Pregunta::class, 'id','id_preguntas');
     }
 
 

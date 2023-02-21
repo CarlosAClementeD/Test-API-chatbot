@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Preguntas;
+use App\Models\Pregunta;
 use App\Models\PreguntaSimilar;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
@@ -18,11 +18,8 @@ class PreguntasController extends Controller
      */
     public function index()
     {
-        $preguntas = Preguntas::all();
-
-        return response()->json([
-            'preguntas' => $preguntas,
-        ]);
+        $preguntas = Pregunta::all();
+        return view('preguntas.index', compact('preguntas'));
     }
 
     /**
@@ -89,7 +86,7 @@ class PreguntasController extends Controller
     }
     
      public function show($texto){
-         $preguntas = Preguntas::pluck('pregunta')->toArray();
+         $preguntas = Pregunta::pluck('pregunta')->toArray();
          $jaccardArray = $this->jaccardSimilarity($this->LimpiarArreglo($preguntas),$texto);
          $coincidencia = max($jaccardArray);
          $maxIndex = array_search($coincidencia, $jaccardArray);
@@ -116,7 +113,7 @@ class PreguntasController extends Controller
                 }
            
         }else{
-            $respuesta = Preguntas::where('pregunta', $preguntas[$maxIndex])->value('respuesta');
+            $respuesta = Pregunta::where('pregunta', $preguntas[$maxIndex])->value('respuesta');
             return response()->json([
                 'respuesta' => $respuesta,
                 'coincidencia' => $coincidencia

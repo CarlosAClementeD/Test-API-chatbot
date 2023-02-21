@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\PreguntaSimilar;
 
-class Preguntas extends Model
+class Pregunta extends Model
 {
     use HasFactory;
 
@@ -14,8 +14,8 @@ class Preguntas extends Model
 
     protected $fillable = ['pregunta', 'respuesta'];
 
-    public function pregunta_similar() {
-        return $this->hasMany( PreguntaSimilar::class, 'id','id_preguntas');
+    public function preguntas_similares(){
+        return $this->hasMany(PreguntaSimilar::class, 'id_preguntas');
     }
 }
 

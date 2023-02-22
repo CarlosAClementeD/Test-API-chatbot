@@ -10,7 +10,7 @@
                         <tr>
                             <th>ID</th>
                             <th>Pregunta Original</th>
-                            <th>Acciones</th>
+                            <th>Preguntas Similares</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -19,8 +19,8 @@
                                 <td>{{ $pregunta->id }}</td>
                                 <td>{{ $pregunta->pregunta }}</td>
                                 <td>
-                                    <a href="{{ route('preguntas_similares.show', ['id' => $pregunta->id]) }}" class="btn btn-primary">Ver preguntas similares</a>
-                                    <a href="{{ route('preguntas_similares.create', ['id' => $pregunta->id]) }}" class="btn btn-success">Agregar pregunta similar</a>
+                                    <a href="{{ route('preguntas_similares.show', ['id' => $pregunta->id]) }}" class="btn btn-primary">Ver</a>
+                                    <a href="{{ route('preguntas_similares.create', ['id' => $pregunta->id]) }}" class="btn btn-success">Agregar</a>
                                 </td>
                             </tr>
                         @endforeach

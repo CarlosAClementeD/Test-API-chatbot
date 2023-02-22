@@ -4,14 +4,13 @@
     <div class="container">
         <div class="row my-3">
             <div class="col-md-12">
-                <h2 class="text-light">Listado de Preguntas Similares</h2>
-                <p>Pregunta Original: {{$pregunta->pregunta}}</p>
+                <h2 class="text-light mb-4">Listado de Preguntas Similares</h2>
+                <h4 class="text-light mb-2">Pregunta Original: {{ $pregunta->pregunta }}</h4>
                 <table class="table table-dark table-striped">
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Pregunta Similar</th>
-                            <th>Pregunta Original</th>
+                            <th>Preguntas Similares</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
@@ -20,7 +19,6 @@
                             <tr>
                                 <td>{{ $pregunta_similar->id }}</td>
                                 <td>{{ $pregunta_similar->pregunta }}</td>
-                                <td>{{ $pregunta_similar->id_preguntas }}</td>
                                 <td>
                                         <a href="{{ route('preguntas_similares.edit', $pregunta_similar->id) }}" class="btn btn-primary">Editar</a>
                                         <form action="{{ route('preguntas_similares.destroy', $pregunta_similar->id) }}" method="POST" style="display: inline;">

@@ -21,7 +21,12 @@
             <li class="nav-item">
               <a class="nav-link {{ (request()->is('preguntas_similares')) ? 'active' : '' }}" href="{{route('preguntas_similares.index')}}">Preguntas Similares</a>
             </li>
-
+            <li class="nav-item">
+              <a class="nav-link {{ (request()->is('menu_aspirante')) ? 'active' : '' }}" href="{{route('menu_aspirante.index')}}">Menú Aspirantes</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link {{ (request()->is('menu_alumno')) ? 'active' : '' }}" href="{{route('menu_alumno.index')}}">Menú Alumno</a>
+            </li>
           </ul>
 
         </div>

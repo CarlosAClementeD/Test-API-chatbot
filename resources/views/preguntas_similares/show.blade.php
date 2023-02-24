@@ -6,6 +6,7 @@
             <div class="col-md-12">
                 <h2 class="text-light mb-4">Listado de Preguntas Similares</h2>
                 <h4 class="text-light mb-2">Pregunta Original: {{ $pregunta->pregunta }}</h4>
+                <a href="{{ route('preguntas_similares.create', ['id' => $pregunta->id]) }}" class="btn btn-success">Agregar</a>
                 <table class="table table-dark table-striped">
                     <thead>
                         <tr>

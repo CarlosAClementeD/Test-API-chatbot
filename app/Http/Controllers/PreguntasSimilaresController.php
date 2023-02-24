@@ -42,7 +42,7 @@ class PreguntasSimilaresController extends Controller
         $pregunta_similar->pregunta = $request->pregunta;
         $pregunta_similar->id_preguntas = $request->id_preguntas;
         $pregunta_similar->save();
-        return redirect()->route('preguntas.index')->with('success', 'Pregunta similar creada exitosamente');
+        return redirect()->route('preguntas_similares.show',['id' => $request->id_preguntas])->with('success', 'Pregunta similar creada exitosamente');
     }
     
 
@@ -112,7 +112,7 @@ class PreguntasSimilaresController extends Controller
     public function destroy($id){
         $preguntaSimilar = PreguntaSimilar::find($id);
         $preguntaSimilar->delete();
-        return redirect()->route('preguntas_similares.index')->with('success', 'Pregunta similar eliminada exitosamente');
+        return redirect()->route('preguntas_similares.show',['id' => $preguntaSimilar->id_preguntas])->with('success', 'Pregunta similar eliminada exitosamente');
     }
 
 }

@@ -83,7 +83,7 @@ class PreguntasSimilaresController extends Controller
     public function update(Request $request, $id){
         // Obtener la pregunta similar a actualizar
         $preguntaSimilar = PreguntaSimilar::find($id);
-        
+        $id_preguntas =$preguntaSimilar->id_preguntas;
         // Validar los datos del formulario
        $request->validate([
             'pregunta' => 'required|max:150',
@@ -92,12 +92,12 @@ class PreguntasSimilaresController extends Controller
 
         // Actualizar la pregunta similar con los datos del formulario
         $preguntaSimilar->pregunta = $request->pregunta;
-        $preguntaSimilar->id_preguntas = $id;
+        $preguntaSimilar->id_preguntas = $id_preguntas;
         $saveresult = $preguntaSimilar->save();
      
 
         // Redirigir al usuario de vuelta a la lista de preguntas similares
-        return redirect()->route('preguntas_similares.show',['id' => $id])
+        return redirect()->route('preguntas_similares.show',['id' => $id_preguntas])
                         ->with('mensaje', 'La pregunta similar ha sido actualizada correctamente.');
     }
 

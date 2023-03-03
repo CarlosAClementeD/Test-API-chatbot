@@ -90,7 +90,7 @@ class PreguntasController extends Controller
          $jaccardArray = $this->jaccardSimilarity($this->LimpiarArreglo($preguntas),$texto);
          $coincidencia = max($jaccardArray);
          $maxIndex = array_search($coincidencia, $jaccardArray);
-        if($coincidencia < 40){
+        if($coincidencia < 45){
             $preguntasSimilares = PreguntaSimilar::pluck('pregunta')->toArray();
             $jaccardArraySim = $this->jaccardSimilarity($this->LimpiarArreglo($preguntasSimilares),$texto);
             $coincidenciaSim = max($jaccardArraySim);
@@ -100,7 +100,7 @@ class PreguntasController extends Controller
                 ->select('respuesta')
                 ->where('preguntas_similares.pregunta', '=', $preguntasSimilares[$maxIndexSim])
                 ->get();
-                if($coincidenciaSim >40){
+                if($coincidenciaSim >= 45){
                     return response()->json([
                         'respuesta' => $respuestaSim[0]->respuesta,
                         'coincidencia' => $coincidenciaSim
